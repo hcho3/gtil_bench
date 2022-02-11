@@ -36,6 +36,7 @@ cd ..
 
 ## Example run
 ```
+$ export OMP_PROC_BIND=true
 $ ./build/gtil_bench gtil large_model.json 393 100000
 GTIL
 Time elapsed: 5864 ms
