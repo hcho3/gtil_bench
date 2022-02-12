@@ -42,10 +42,10 @@ cd ..
 $ export OMP_PROC_BIND=true
 $ ./build/gtil_bench gtil large_model.json 393 100000
 GTIL
-Time elapsed: 5864 ms
+Time elapsed: 6075 ms
 
 $ ./build/gtil_bench xgb large_model.json 393 100000
 XGBoost
 [13:38:09] WARNING: ../src/learner.cc:735: Found JSON model saved before XGBoost 1.6, please save the model using current version again. The support for old JSON model will be discontinued in XGBoost 2.3.
-Time elapsed: 1450 ms
+Time elapsed: 2566 ms
 ```

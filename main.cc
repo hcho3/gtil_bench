@@ -65,18 +65,14 @@ int main(int argc, char** argv) {
 
   std::unique_ptr<DenseData> input = GenerateData(num_row, num_feature);
 
+  auto tstart = std::chrono::high_resolution_clock::now();
   if (std::string(runtime) == "gtil") {
     std::cout << "GTIL" << std::endl;
     std::unique_ptr<treelite::Model> model
         = treelite::frontend::LoadXGBoostJSONModel(model_path.c_str());
     float* output = new float[treelite::gtil::GetPredictOutputSize(model.get(), num_row)];
 
-    auto tstart = std::chrono::high_resolution_clock::now();
     treelite::gtil::Predict(model.get(), input->data, num_row, output, -1, true);
-    auto tend = std::chrono::high_resolution_clock::now();
-    std::cout << "Time elapsed: " 
-        << std::chrono::duration_cast<std::chrono::milliseconds>(tend - tstart).count() << " ms"
-        << std::endl;
 
     delete [] output;
   } else if (std::string(runtime) == "xgb") {
@@ -91,12 +87,7 @@ int main(int argc, char** argv) {
     const float* out_result = nullptr;
     bst_ulong out_size = 0;
 
-    auto tstart = std::chrono::high_resolution_clock::now();
     xgb_check(XGBoosterPredict(bst, dmat, 0, 0, 0, &out_size, &out_result));
-    auto tend = std::chrono::high_resolution_clock::now();
-    std::cout << "Time elapsed: " 
-        << std::chrono::duration_cast<std::chrono::milliseconds>(tend - tstart).count() << " ms"
-        << std::endl;
 
     xgb_check(XGDMatrixFree(dmat));
     xgb_check(XGBoosterFree(bst));
@@ -104,6 +95,10 @@ int main(int argc, char** argv) {
     std::cerr << "Unrecognized choice for runtime: " << runtime << std::endl;
     return 2;
   }
+  auto tend = std::chrono::high_resolution_clock::now();
+  std::cout << "Time elapsed: "
+      << std::chrono::duration_cast<std::chrono::milliseconds>(tend - tstart).count() << " ms"
+      << std::endl;
 
   return 0;
 }
