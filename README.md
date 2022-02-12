@@ -13,7 +13,8 @@ git clone --recursive https://github.com/dmlc/xgboost
 cd xgboost
 mkdir build
 cd build
-cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -O2"
 ninja -v install
 cd ../..
 
@@ -22,14 +23,16 @@ git clone https://github.com/hcho3/treelite.git -b gtil_block_omp
 cd treelite
 mkdir build
 cd build
-cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -O2"
 ninja -v install
 cd ../..
 
 # Build micro-benchmark
 mkdir build
 cd build
-cmake .. -GNinja
+cmake .. -GNinja -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer -O2"
 ninja -v
 cd ..
 ```
